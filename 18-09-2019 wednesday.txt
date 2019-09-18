@@ -1,0 +1,180 @@
+
+Iterators
+is an object that contains no of elements.
+They have two methods"iter" and "next".
+Lists,tuples,dictionaries,and sets are all iterable objects
+In [7]:
+it = iter('Python')
+print(next(it))
+print(next(it))
+P
+y
+Given list contains the courses like c,c++,python.Print all the courses
+line by line using iter() and next() functions in iterator.
+In [8]:
+course = ['c','c++','python']
+result = iter(course)
+print(next(result))
+print(next(result))
+print(next(result))
+c
+c++
+python
+Generators
+Generator is a function that returns iterators and objects.
+Generators uses "yield" instead of "return".
+In [9]:
+def generatorFunction():
+    yield 1
+    yield 2
+    yield 3
+for value in generatorFunction():
+    print(value)
+1
+2
+3
+Function to print square of each number until it reaches the upper bound range using Generators function. [ i.e., range(5) ? 2^2 = 4, 4^2 = 16, 16^2….]
+In [10]:
+def gen():
+    n=2
+    while True:
+        n **= 2
+        yield n
+a = gen()
+for i in range(5):
+    print(next(a))
+4
+16
+256
+65536
+4294967296
+Maps in Python
+It produces a list of results that it apply given function to each item of a given iterable (list,tuple, sets etc..)
+Syntax: map( function, iterable )
+In [11]:
+def addition(n):
+    return n + n
+#1+1=2,2+2=4
+result = list(map(addition,range(1,5)))
+print(result)
+[2, 4, 6, 8]
+In [12]:
+# Function to print squares of numbers in given range between 1 to 5 
+def squareOfNumb(n):
+    return n*n
+result = set(map(squareOfNumb,range(1,5)))
+print(result)
+{16, 1, 4, 9}
+Filters in Python
+Filters function in python is used to check whether given element is boolean or not(True or False).
+Syntax: f : x ? { T, F }
+Task : Given list have alphanumeric values. Check whether it is digit or alphabet and print all the digits. Explanation: Li = [1, 2, ‘a’, ‘b’, ‘c’, 3]. “Filter” checks elements in “Li” and it will print the result if condition is “True” (1? True, 2? True, ‘a’ ? False…..)
+In [13]:
+li = [1,2,'a','b','c',3]
+def isDigit(c):
+    c = str(c)
+    if c.isdigit():
+        return True
+    return False
+isDigit('a')
+list(filter(isDigit,li))
+Out[13]:
+[1, 2, 3]
+Task:Print all prime numbers for a given range using filter( ) function.
+In [14]:
+def checkPrime(n):
+    if n<2:
+        return False
+    for i in range(2,n//2 + 1):
+        if n%i == 0:
+            return False
+    return True
+lb,ub = 500,600
+primeList = list(filter(checkPrime,range(lb,ub)))
+print(primeList)
+[503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599]
+Lambdas in Python
+Python Lambda is just a function without a name or anonymous function.
+Syntax: lambda argument : expression Lambda x : x ^ 3 (x? argument, x ^ 3 ? expression) Note: Lambda takes 0 or more arguments but only one expression.
+Ex: lambda x,y : x + y
+In [15]:
+def cube(n):
+    return n ** 3
+result = lambda n:n**3
+result(4)
+Out[15]:
+64
+In [16]:
+result = lambda x:x**3
+result(4)
+Out[16]:
+64
+Example
+Example for Lambda Inline Program
+Note: Lambda is not iterable. So by using map( ) or filter( ) functions we can write a program which is iterable.
+Write a python program to print cubes of 1 to 6 numbers without using loops.
+In [17]:
+list(map(lambda x:x**3,[1,2,3,4,5,6]))
+Out[17]:
+[1, 8, 27, 64, 125, 216]
+Print all even number in the range between 20 to 40 using Lambda function
+In [18]:
+even = lambda x:x%2 ==0
+result = list(filter(even,range(20,40)))
+print(result)
+[20, 22, 24, 26, 28, 30, 32, 34, 36, 38]
+Applying Functional programming to the Marks Analysis Application and finding Average of Class. (Refer File Handling and Packages Topics for better understanding)
+In [26]:
+from random import randint
+def generateMarks(n,lb,ub):
+    filename = 'DataFiles/marks.txt'
+    with open(filename,'w') as f:
+        for i in range(n):
+            marks = randint(lb,ub)
+            f.write(str(marks)+'\n')
+    return
+generateMarks(10000,0,100)
+In [20]:
+#Class Average
+def readMarkslist(filepath):
+    with open(filepath,'r') as f:
+        filedata = f.read().split()
+    return list(map(int,filedata))
+def classAverage(filepath):
+    markslist = readMarkslist(filepath)
+    return sum(markslist)//len(markslist)
+filepath = 'DataFiles/marks.txt'
+classAverage(filepath)
+Out[20]:
+50
+Find the Percentage of Distinction, pass and fail using “Lambda” and “Filter” function function.
+In [21]:
+def percentageFailed(filepath):
+    markslist = readMarkslist(filepath)
+    failedcount = len(list(filter(lambda mark:mark < 40,markslist)))
+    return (failedcount/len(markslist))*100
+percentageFailed(filepath)
+Out[21]:
+39.56
+In [22]:
+def percentagePassed(filepath):
+    return 100 - percentageFailed(filepath)
+percentagePassed(filepath)
+Out[22]:
+60.44
+In [24]:
+def percentageDistinction(filepath):
+    markslist = readMarkslist(filepath)
+    distinctioncount = len(list(filter(lambda mark: mark > 70,markslist)))
+    return (distinctioncount/len(markslist))*100
+percentageDistinction(filepath)
+Out[24]:
+30.43
+Given Two lists contains the name of scientists. List 1 have First Name of scientist and List 2 have Last Name. Write a program to print single list that should contains Full Name of all scientists names and First letter must be Capital.
+In [25]:
+names1 = ['krishna','james','mahesh']
+names2 = ['sai','ram','kumar']
+result = lambda x,y :x[0].upper() +x[1:] + ' ' +y[0].upper() + y[1:]
+print(list(map(result,names1,names2)))
+['Krishna Sai', 'James Ram', 'Mahesh Kumar']
+In [ ]:
